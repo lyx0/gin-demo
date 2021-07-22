@@ -1,8 +1,6 @@
 package data
 
 import (
-	"encoding/json"
-	"io"
 	"time"
 )
 
@@ -11,17 +9,15 @@ type Product struct {
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Price       float32 `json:"price"`
-	SKU         string  `json:"-"`
+	SKU         string  `json:"sku"`
 	CreatedOn   string  `json:"-"`
 	UpdatedOn   string  `json:"-"`
 	DeletedOn   string  `json:"-"`
 }
-
 type Products []*Product
 
-func (p *Products) ToJSON(w io.Writer) error {
-	e := json.NewEncoder(w)
-	return e.Encode(p)
+func GetProducts() Products {
+	return productList
 }
 
 var productList = []*Product{
@@ -44,3 +40,8 @@ var productList = []*Product{
 		UpdatedOn:   time.Now().UTC().String(),
 	},
 }
+
+// func (p *Products) ToJSON(w io.Writer) error {
+// 	e := json.NewEncoder(w)
+// 	return e.Encode(p)
+// }

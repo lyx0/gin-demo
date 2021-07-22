@@ -1,6 +1,9 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/lylx0/gin-demo/data"
+)
 
 func main() {
 	r := gin.Default()
@@ -9,5 +12,7 @@ func main() {
 			"message": "pong",
 		})
 	})
+	getProd = data.GetProducts()
+	r.GET("/products", getProd)
 	r.Run()
 }
