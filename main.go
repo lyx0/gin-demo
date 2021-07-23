@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
-	"text/template"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +17,7 @@ func formatAsDate(t time.Time) string {
 func main() {
 	router := gin.Default()
 	router.Delims("{[{", "}]}")
-	router.setFuncMap(template.FuncMap{
+	router.SetFuncMap(template.FuncMap{
 		"formatAsDate": formatAsDate,
 	})
 	router.LoadHTMLFiles("./testdata/raw.tmpl")
@@ -28,5 +28,5 @@ func main() {
 		})
 	})
 
-	router.Run("8080")
+	router.Run(":8080")
 }
