@@ -1,18 +1,32 @@
 package main
 
 import (
+	"fmt"
+	"net/http"
+	"text/template"
+	"time"
+
 	"github.com/gin-gonic/gin"
-	"github.com/lylx0/gin-demo/data"
 )
 
+func formatAsDate(t time.Time) string {
+	year, month, day := t.Date()
+	return fmt.Sprintf("%d%02d/%02d", year, month, day)
+}
+
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
+	router := gin.Default()
+	router.Delims("{[{", "}]}")
+	router.setFuncMap(template.FuncMap{
+		"formatAsDate": formatAsDate,
+	})
+	router.LoadHTMLFiles("./testdata/raw.tmpl")
+
+	router.GET("/raw", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "raw.tmpl", map[string]interface{}{
+			"now": time.Date(2017, 07, 01, 0, 0, 0, 0, time.UTC),
 		})
 	})
-	getProd = data.GetProducts()
-	r.GET("/products", getProd)
-	r.Run()
+
+	router.Run("8080")
 }
