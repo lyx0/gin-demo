@@ -12,8 +12,11 @@ func main() {
 			"message": "pong",
 		})
 	})
+	// get all products
 	r.GET("/products", data.GetProducts)
 
+	r.GET("/products/:id", data.GetProductByID)
+	// Add a new product
 	r.POST("/products", data.PostProducts)
 	r.Run()
 }

@@ -10,7 +10,7 @@ import (
 
 // Product defines the structure for an API product
 type product struct {
-	ID          int     `json:"id"`
+	ID          string     `json:"id"`
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Price       float32 `json:"price"`
@@ -20,7 +20,7 @@ type product struct {
 	DeletedOn   string  `json:"-"`
 }
 
-
+// GetProducts responds with a list of all products
 func GetProducts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, productList)
 }
@@ -40,9 +40,25 @@ func PostProducts(c *gin.Context) {
 	productList = append(productList, newProduct)
 }
 
+// GetProductByID returns a product from a
+// given ID if a product with that ID was found
+func GetProductByID(c *gin.Context) {
+	id := c.Param("id")
+
+	// Loop over the list of products, looking for
+	// a product with the given ID.
+	for _, p := range productList {
+		if p.ID == id {
+			c.IndentedJSON(http.StatusOK, p)
+			return
+		}
+	}
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Product not found"})
+}
+
 var productList = []product{
 	{
-		ID:          1,
+		ID:          "1",
 		Name:        "Latte",
 		Description: "Frothy milky coffee",
 		Price:       2.45,
@@ -51,7 +67,7 @@ var productList = []product{
 		UpdatedOn:   time.Now().UTC().String(),
 	},
 	{
-		ID:          2,
+		ID:          "2",
 		Name:        "Espresso",
 		Description: "Short and strong coffee without milk",
 		Price:       1.99,
