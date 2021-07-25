@@ -1,6 +1,7 @@
 package data
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -22,6 +23,21 @@ type product struct {
 
 func GetProducts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, productList)
+}
+
+// postProducts adds a product from JSON received
+// in the request body.
+func PostProducts(c *gin.Context) {
+	var newProduct product
+
+	// Call BindJSON to bind the received JSON
+	// to newProduct.
+	if err := c.BindJSON(&newProduct); err != nil {
+		fmt.Print(err)
+		return
+	}
+	//  Add the new product to the slice.
+	productList = append(productList, newProduct)
 }
 
 var productList = []product{

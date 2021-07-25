@@ -13,5 +13,7 @@ func main() {
 		})
 	})
 	r.GET("/products", data.GetProducts)
+
+	r.POST("/products", data.PostProducts)
 	r.Run()
 }
